@@ -19,7 +19,7 @@ A universal FiveM library that auto-detects and abstracts common framework and r
 
 1. Download the latest release
 2. Extract to your resources folder
-3. Add `ensure unix_lib` to your server.cfg before other Unix resources
+3. Add `ensure Unix-Lib` to your server.cfg before other Unix resources
 4. UnixLib will auto-detect all supported systems
 
 ## Supported Systems
