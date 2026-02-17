@@ -224,46 +224,138 @@ UnixLib.Target:RemoveZone('myZone')
 ### Menu
 
 ```lua
+-- Open menu
 UnixLib.Menu:Open({
-    header = 'Menu Title',
-    items = {
+    title = 'Menu Title',
+    options = {
         {
-            title = 'Option 1',
+            label = 'Option 1',
             description = 'Description here',
             event = 'myResource:option1'
         },
         {
-            title = 'Option 2',
+            label = 'Option 2',
             icon = 'fas fa-cog',
             event = 'myResource:option2',
             params = { id = 123 }
         }
     }
 })
+
+-- Close menu
+UnixLib.Menu:Close()
+
+-- Create menu option helper
+local option = UnixLib.Menu:CreateOption({
+    label = 'Option',
+    description = 'Description',
+    icon = 'fas fa-cog',
+    event = 'myResource:event',
+    params = { id = 1 }
+})
+
+-- Create ox_lib context
+local context = UnixLib.Menu:CreateContext({
+    id = 'myMenu',
+    title = 'Menu Title',
+    options = { option }
+})
 ```
 
 ### TextUI
 
 ```lua
+-- Show TextUI
 UnixLib.TextUI:Show({
     message = 'Press E to interact',
-    icon = 'fas fa-hand'
+    type = 'info' -- 'info' or 'success' for okokTextUI/qb-core
 })
 
+-- Hide TextUI
 UnixLib.TextUI:Hide()
+
+-- Toggle (show/hide)
+UnixLib.TextUI:Toggle({
+    message = 'Press E to interact'
+})
 ```
 
 ### Input
 
 ```lua
-UnixLib.Input:Open({
-    type = 'text', -- 'text', 'number', 'password'
-    label = 'Enter Name',
+-- Text input (returns string or nil)
+local text = UnixLib.Input:TextInput({
+    title = 'Enter Name',
+    placeholder = 'Your name...',
     default = 'John Doe',
-    required = true
-}, function(value)
-    print('Input:', value)
-end)
+    maxLength = 255
+})
+
+-- Number input (returns number or nil)
+local number = UnixLib.Input:NumberInput({
+    title = 'Enter Amount',
+    placeholder = 'Amount',
+    default = 0
+})
+
+-- Checkbox/confirm dialog (returns boolean)
+local confirmed = UnixLib.Input:Checkbox({
+    title = 'Confirm',
+    label = 'Are you sure?'
+})
+
+-- Choice/select dialog (returns index or nil)
+local choice = UnixLib.Input:Choice({
+    title = 'Select Option',
+    options = {
+        { label = 'Option 1' },
+        { label = 'Option 2' },
+        { label = 'Option 3' }
+    }
+})
+```
+
+### PolyZone
+
+```lua
+-- Create circle zone
+local circleZone = UnixLib.PolyZone:CreateCircleZone({
+    name = 'myCircle',
+    coords = vector3(0, 0, 0),
+    radius = 5.0,
+    onEnter = function()
+        print('Entered zone')
+    end,
+    onExit = function()
+        print('Left zone')
+    end
+})
+
+-- Create box zone
+local boxZone = UnixLib.PolyZone:CreateBoxZone({
+    name = 'myBox',
+    coords = vector3(0, 0, 0),
+    length = 10.0,
+    width = 10.0,
+    heading = 0.0,
+    onEnter = function() end,
+    onExit = function() end,
+    inside = function() end
+})
+
+-- Create combo zone (multiple zones)
+local comboZone = UnixLib.PolyZone:CreateComboZone({
+    name = 'myCombo',
+    zones = { circleZone, boxZone },
+    onEnter = function() end,
+    onExit = function() end
+})
+
+-- Check if inside zone
+local isInside = UnixLib.PolyZone:IsInsideZone(circleZone)
+
+-- Remove zone
+UnixLib.PolyZone:RemoveZone(circleZone)
 ```
 
 ## Configuration
